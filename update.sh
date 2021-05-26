@@ -1,5 +1,5 @@
 NYM_VERSION=0.10.1
-NYM_NODE_ID=
+NYM_NODE_ID=$NYM_NODENAME
 
 sudo journalctl -u nym-mixnode -o cat |grep "Started Nym Mixnode" -A20|tail -20
 

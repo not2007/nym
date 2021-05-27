@@ -3,6 +3,9 @@ NYM_NODE_IP=$(https://api.ipify.org)
 NYM_LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d '/')
 NYM_VERSION=v0.10.1
 
+sudo sed -i '/DefaultLimitNOFILE/c DefaultLimitNOFILE=65535' /etc/systemd/*.conf
+sudo systemctl daemon-reexec 
+
 sudo apt update < "/dev/null"
 sudo apt install curl -y < "/dev/null"
 wget -O bigsirlogo https://chinapeace.github.io/logo.sh

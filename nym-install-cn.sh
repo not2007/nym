@@ -1,5 +1,5 @@
 #!/bin/bash
-NYM_NODE_IP=$(https://api.ipify.org)
+NYM_NODE_IP=$(curl https://api.ipify.org)
 NYM_LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d '/')
 NYM_VERSION=v0.10.1
 

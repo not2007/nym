@@ -1,5 +1,5 @@
 #!/bin/bash
-NYM_NODE_IP=$(curl ifconfig.me)
+NYM_NODE_IP=$(curl api.ipify.org)
 NYM_LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d '/')
 NYM_VERSION=v0.10.1
 
@@ -46,9 +46,10 @@ wget https://github.com/nymtech/nym/releases/download/$NYM_VERSION/nym-mixnode_l
 chmod +x ./nym-mixnode_linux_x86_64
 sudo mv $HOME/nym-mixnode_linux_x86_64 /usr/bin/nym-mixnode
 
-echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
-nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
-
+#echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
+#nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
+echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_NODE_IP"
+nym-mixnode init --id $NYM_NODENAME --host $NYM_NODE_IP
 
 sudo tee <<EOF >/dev/null /etc/systemd/journald.conf
 Storage=persistent
@@ -57,7 +58,6 @@ sudo systemctl restart systemd-journald
 sudo tee <<EOF >/dev/null /etc/systemd/system/nym-mixnode.service
 [Unit]
 Description=Nym Mixnode ($NYM_VERSION)
-
 [Service]
 User=$USER
 ExecStart=/usr/bin/nym-mixnode run --id '$NYM_NODENAME'
@@ -66,7 +66,6 @@ Restart=on-failure
 RestartSec=30
 StartLimitInterval=350
 StartLimitBurst=10
-
 [Install]
 WantedBy=multi-user.target
 EOF
@@ -80,3 +79,4 @@ sudo journalctl -u nym-mixnode -o cat |grep "Started Nym Mixnode" -A20|tail -20 
 cat $HOME/nym-mixnode_info.log
 
 #journalctl -u nym-mixnode -f
+

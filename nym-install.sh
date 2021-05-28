@@ -3,22 +3,32 @@ NYM_NODE_IP=$(curl ifconfig.me)
 NYM_LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d '/')
 NYM_VERSION=v0.10.1
 
+echo 'Your node ip: ' $NYM_NODE_IP
+echo 'Your local ip: ' $NYM_LOCAL_IP
+echo 'gym version: ' $NYM_VERSION
+sleep 2
+
 sudo sed -i '/DefaultLimitNOFILE/c DefaultLimitNOFILE=65535' /etc/systemd/*.conf
 sudo systemctl daemon-reexec 
+
+echo 'add "DefaultLimitNOFILE=65535" to /etc/systemd/*.conf'
+sleep 2
 
 sudo apt update < "/dev/null"
 sudo apt install curl -y < "/dev/null"
 wget -O bigsirlogo https://chinapeace.github.io/logo.sh
 chmod +x bigsirlogo
 ./bigsirlogo
-sleep 3
+sleep 2
+
 if [ ! $NYM_NODENAME ]; then
 		read -p "Enter node name: " NYM_NODENAME
+		echo 'export NYM_NODENAME='$NYM_NODENAME >> $HOME/.bashrc
+		source $HOME/.bashrc
 fi
 echo 'Your node name: ' $NYM_NODENAME
-sleep 1
-echo 'export NYM_NODENAME='$NYM_NODENAME >> $HOME/.bashrc
-source $HOME/.bashrc
+sleep 2
+
 sudo apt install make clang pkg-config libssl-dev build-essential git -y < "/dev/null"
 sudo curl https://sh.rustup.rs -sSf | sh -s -- -y
 source $HOME/.cargo/env
@@ -36,7 +46,10 @@ wget https://github.com/nymtech/nym/releases/download/$NYM_VERSION/nym-mixnode_l
 chmod +x ./nym-mixnode_linux_x86_64
 sudo mv $HOME/nym-mixnode_linux_x86_64 /usr/bin/nym-mixnode
 
+echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
 nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
+
+
 sudo tee <<EOF >/dev/null /etc/systemd/journald.conf
 Storage=persistent
 EOF

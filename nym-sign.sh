@@ -20,7 +20,7 @@ read -p "Wait for create address in https://web-wallet-finney.nymtech.net"
 read -p "Wait for faucet finished: " OK
 read -p "Wait for bond finished: " OK
 
-echo "nym-mixnode init --id yudishen --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
-nym-mixnode init --id NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
+echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
+nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
 
 sudo systemctl restart nym-mixnode.service

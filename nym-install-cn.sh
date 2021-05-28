@@ -46,9 +46,10 @@ wget https://github.com/nymtech/nym/releases/download/$NYM_VERSION/nym-mixnode_l
 chmod +x ./nym-mixnode_linux_x86_64
 sudo mv $HOME/nym-mixnode_linux_x86_64 /usr/bin/nym-mixnode
 
-echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
-nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
-
+#echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP"
+#nym-mixnode init --id $NYM_NODENAME --host $NYM_LOCAL_IP --announce-host $NYM_NODE_IP
+echo "nym-mixnode init --id $NYM_NODENAME --host $NYM_NODE_IP"
+nym-mixnode init --id $NYM_NODENAME --host $NYM_NODE_IP
 
 sudo tee <<EOF >/dev/null /etc/systemd/journald.conf
 Storage=persistent

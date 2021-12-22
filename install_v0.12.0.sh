@@ -1,5 +1,6 @@
 NYM_VERSION=v0.12.0
 NYM_NODE_IP=$(curl api.ipify.org)
+#NYM_LOCAL_IP=
 NYM_LOCAL_IP=$(ip addr | grep 'state UP' -A2 | tail -n1 | awk '{print $2}' | cut -f1 -d '/')
 
 echo 'Your node ip: ' $NYM_NODE_IP

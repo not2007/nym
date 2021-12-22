@@ -31,4 +31,6 @@ nym-mixnode upgrade --id $NYM_NODENAME
 sudo systemctl start nym-mixnode.service
 echo "sudo systemctl restart nym-mixnode.service"
 
+nym-mixnode node-details --id $NYM_NODENAME
+
 journalctl -u nym-mixnode -f
